@@ -60,6 +60,9 @@
 </script>
 
 <style lang="scss" scoped>
+a {
+  text-decoration: none;
+}
 .header {
   display: flex;
   flex-direction: column;
@@ -215,8 +218,5 @@
       }
     }
   }
-}
-a {
-  text-decoration: none;
 }
 </style>
