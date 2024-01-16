@@ -47,8 +47,8 @@
           <NuxtLink to="#">
             <h1 class="title">Ваша корзина</h1>
           </NuxtLink>
-          <p class="items">3 товара</p>
-          <p class="price">50 576 ₽</p>
+          <p class="items">{{ props.distinctProductCount }} {{ props.productNounForm }}</p>
+          <p class="price">{{ props.totalOrderSum }} ₽</p>
         </div>
       </div>
     </div>
@@ -56,7 +56,11 @@
 </template>
 
 <script setup>
-
+const props = defineProps({
+  distinctProductCount: Number,
+  totalOrderSum: Number,
+  productNounForm: String
+})
 </script>
 
 <style lang="scss" scoped>

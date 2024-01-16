@@ -1,5 +1,9 @@
 <template>
-  <Header/>
+  <Header
+    :distinctProductCount="distinctProductCount"
+    :totalOrderSum="totalOrderSum"
+    :productNounForm="productNounForm"
+  />
   <div class="basket-page">
     <div class="breadcrumbs">
       <NuxtLink to="#" class="link">Главная</NuxtLink>
@@ -9,44 +13,145 @@
     <div class="title-block">
       <h1 class="title">
         Ваша корзина
-        <span class="item">4 товара</span>
+        <span class="item">{{ distinctProductCount }} {{ productNounForm }}</span>
       </h1>
-      <NuxtLink to="#" class="link">Очистить корзину</NuxtLink>
+      <button class="clear" @click="clearCart">Очистить корзину</button>
     </div>
     <div class="content">
       <div class="products-container">
-        <div class="product-block" v-for="product in 3">
-          <img src="/assets/1.png" class="product-img">
+        <div class="product-block" v-for="(product, index) in products" :key="index">
+          <img :src="product.img" class="product-img">
           <div class="description-container">
             <div class="btns-block">
-              <h1 class="title">Вытяжное устройство G2H</h1>
-              <button class="close-btn">
+              <h1 class="title-item">{{ product.title }}</h1>
+              <button class="close-btn" @click="removeProduct(index)">
                 <img src="/assets/icon-close.svg" class="close">
               </button>
             </div>
             <div class="description-block">
-              <p class="description">12-72/168 м3/ч / гидрорегулируемый расход / от датчика присутствия</p>
+              <p class="description">{{ product.descriptionOne }} / {{ product.descriptionTwo }} / {{ product.descriptionThree }}</p>
               <div class="count-block">
-                <button class="minus">
+                <button class="minus" @click="minus(index)">
                   <img src="/assets/icon-minus.svg">
                 </button>
-                <div class="count">1</div>
-                <button class="plus">
+                <p class="count">{{ product.count }}</p>
+                <button class="plus" @click="plus(index)">
                   <img src="/assets/icon-plus.svg">
                 </button>
               </div>
-              <p class="price">12 644 ₽</p>
+              <p class="price">{{ product.price }} ₽</p>
             </div>
-            <p class="artikul">Артикул: G2H1065</p>
+            <p class="artikul">Артикул: {{ product.artikul }}</p>
           </div>
         </div>
+      </div>
+      <div class="summ-block">
+        <h1 class="title-summ">Итого</h1>
+        <div class="order-block">
+          <div class="order-description">
+            <p class="order-name">Сумма заказа</p>
+            <p class="order-summ">{{ totalOrderSum }} ₽</p>
+          </div>
+          <div class="order-description">
+            <p class="order-name">Количество</p>
+            <p class="order-count">{{ totalProductCount }}</p>
+          </div>
+          <div class="order-description">
+            <p class="order-name">Установка</p>
+            <p class="order-plant">Нет</p>
+          </div>
+        </div>
+        <div class="result-block">
+          <p class="result-name">Стоимость товаров</p>
+          <p class="result-summ">{{ totalOrderSum }} ₽</p>
+        </div>
+        <button class="order-btn">Оформить заказ</button>
+        <button class="click-btn">Купить в 1 клик</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref, computed } from 'vue';
 import Header from "../components/Header.vue"
+import img1 from '../assets/1.png';
+import img2 from '../assets/2.png';
+import img3 from '../assets/3.png';
+
+const products = ref([
+  {
+    img: img1,
+    title: 'Вытяжное устройство G2H',
+    price: 12644,
+    descriptionOne: '12-72/168 м3/ч',
+    descriptionTwo: 'гидрорегулируемый расход',
+    descriptionThree: 'от датчика присутствия',
+    artikul: 'G2H1065',
+    count: 1
+  },
+  {
+    img: img2,
+    title: 'Вытяжное устройство BXC',
+    price: 25288,
+    descriptionOne: '15-72/168 м3/ч',
+    descriptionTwo: 'гидрорегулируемый расход',
+    descriptionThree: 'от датчика присутствия',
+    artikul: 'G2H2215',
+    count: 3
+  },
+  {
+    img: img3,
+    title: 'Вытяжное устройство GHN',
+    price: 17644,
+    descriptionOne: '19-52/148 м3/ч',
+    descriptionTwo: 'гидрорегулируемый расход',
+    descriptionThree: 'от датчика присутствия',
+    artikul: 'G2H1112',
+    count: 5
+  }
+])
+
+function clearCart() {
+  products.value = []
+}
+function removeProduct(index) {
+  products.value.splice(index, 1)
+}
+function minus(index) {
+  if (products.value[index].count > 0) {
+    products.value[index].count--
+  }
+}
+function plus(index) {
+  if (products.value[index].count < 9) {
+    products.value[index].count++
+  }
+}
+
+const totalProductCount = computed(() => {
+  return products.value.reduce((sum, product) => sum + product.count, 0)
+})
+const totalOrderSum = computed(() => {
+  return products.value.reduce((sum, product) => sum + (product.count * product.price), 0)
+})
+const distinctProductCount = computed(() => {
+  const distinctArtikuls = new Set(products.value.map(product => product.artikul))
+  return distinctArtikuls.size
+})
+const productNounForm = computed(() => {
+  const count = distinctProductCount.value
+  function getNounForm(count) {
+    if (count === 1) {
+      return 'товар'
+    } else if (count >= 2 && count <= 4) {
+      return 'товара'
+    } else {
+      return 'товаров'
+    }
+  }
+  return getNounForm(count)
+})
 </script>
 
 <style lang="scss" scoped>
@@ -102,7 +207,10 @@ a {
       }
     }
 
-    .link {
+    .clear {
+      cursor: pointer;
+      border: none;
+      background: none;
       color: #797B86;
       text-align: right;
       font-family: 'Lato';
@@ -122,6 +230,7 @@ a {
     .products-container {
       display: flex;
       flex-direction: column;
+      margin-top: 20px;
       gap: 29px;
 
       .product-block {
@@ -257,6 +366,127 @@ a {
             margin-top: 6px;
           }
         }
+      }
+    }
+
+    .summ-block {
+      display: flex;
+      flex-direction: column;
+      padding: 35px;
+      width: 350px;
+      height: 458px;
+      border-radius: 5px;
+      background: #F6F8FA;
+
+      .title-summ {
+        color: #1F2432;
+        font-family: 'Lato';
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 120.523%;
+      }
+
+      .order-block {
+        display: flex;
+        flex-direction: column;
+        margin-top: 31px;
+        border-bottom: 1px solid #AEB0B6;
+        padding-bottom: 30px;
+        gap: 18px;
+
+        .order-description {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+
+          .order-name {
+            color: #1F2432;
+            font-family: 'Lato';
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 145%;
+          }
+
+          .order-summ, .order-count, .order-plant {
+            color: #1F2432;
+            text-align: right;
+            font-family: 'Roboto';
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 145%;
+          }
+        }
+      }
+
+      .result-block {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+        width: 100%;
+
+        .result-name {
+          color: #1F2432;
+          font-family: 'Lato';
+          font-size: 18px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: 145%;
+        }
+
+        .result-summ {
+          color: #1F2432;
+          text-align: right;
+          font-family: 'Roboto';
+          font-size: 26px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: 130%;
+          letter-spacing: 0.13px;
+        }
+      }
+
+      .order-btn {
+        cursor: pointer;
+        border: none;
+        display: inline-flex;
+        padding: 14px 40px;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        border-radius: 4px;
+        background: #0069B4;
+        color: #FFF;
+        font-family: 'Lato';
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 145%;
+        margin-top: 30px;
+      }
+
+      .click-btn {
+        cursor: pointer;
+        border: none;
+        display: inline-flex;
+        padding: 14px 40px;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        border-radius: 4px;
+        border: 1px solid #0069B4;
+        background: #FFF;
+        color: #0069B4;
+        font-family: 'Lato';
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 145%;
+        margin-top: 12px;
       }
     }
   }
