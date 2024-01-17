@@ -78,10 +78,49 @@ const store = createStore({
           count: 1
         }
       ],
+      viewedProducts: [
+        {
+          imgBig: g2h,
+          title: 'Вытяжное устройство G2H',
+          minPrice: 6848,
+          maxPrice: 56584,
+          minEuro: 77.60,
+          maxEuro: 643.86,
+          descriptionItem: 'Многофункциональное вытяжное устройство для естественной и гибридной вентиляции'
+        },
+        {
+          imgBig: bxc,
+          title: 'Вытяжное устройство BXC',
+          minPrice: 5841,
+          maxPrice: 36524,
+          minEuro: 55.20,
+          maxEuro: 443.80,
+          descriptionItem: 'Вытяжное устройство для механической системы вентиляции'
+        },
+        {
+          imgBig: ghn,
+          title: 'Вытяжное устройство GHN',
+          minPrice: 7848,
+          maxPrice: 76577,
+          minEuro: 80.10,
+          maxEuro: 770.50,
+          descriptionItem: 'Вытяжное устройство с датчиком присутствия'
+        },
+        {
+          imgBig: tda,
+          title: 'Вытяжное устройство TDA',
+          minPrice: 3580,
+          maxPrice: 25700,
+          minEuro: 38.80,
+          maxEuro: 423.90,
+          descriptionItem: 'Вытяжное устройство с датчиком присутствия'
+        }
+      ]
     }
   },
   getters: {
-    allProducts: state => state.products
+    allProducts: state => state.products,
+    viewedProducts: state => state.viewedProducts
   },
   mutations: {
     clearCart(state) {

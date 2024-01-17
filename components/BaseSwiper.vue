@@ -26,11 +26,11 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
+import store from '../store/index'
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 
-const props = defineProps(['products'])
+const products = computed(() => store.getters.viewedProducts)
 </script>
 
 <style lang="scss" scoped>
