@@ -213,7 +213,7 @@ a {
 
         .price {
           color: #1F2432;
-          font-family: 'Lato';
+          font-family: 'Roboto';
           font-size: 12px;
           font-style: normal;
           font-weight: 400;

@@ -58,7 +58,7 @@
           </div>
           <div class="order-description">
             <p class="order-name">Установка</p>
-            <p class="order-plant">Нет</p>
+            <p class="order-plant">{{ isChecked ? 'Да' : 'Нет' }}</p>
           </div>
         </div>
         <div class="result-block">
@@ -69,12 +69,27 @@
         <button class="click-btn">Купить в 1 клик</button>
       </div>
     </div>
+    <div class="plant-block">
+      <div class="custom-checkbox" @click="toggleCheckbox">
+        <span class="checkbox-icon" :class="{ 'checked': isChecked }">
+          <img v-if="isChecked" src="/assets/icon-checkmark.svg" alt="Checkmark Icon">
+        </span>
+      </div>
+      <div class="plant-icon">
+        <img src="/assets/icon-plant.svg">
+      </div>
+      <div class="label-block">
+        <label>Установка</label>
+        <p>Отметьте, если Вам необходима консультация профессионала по монтажу выбранных товаров.</p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
 import Header from "../components/Header.vue"
+import Swiper from "../components/BaseSwiper.vue"
 import img1 from '../assets/1.png';
 import img2 from '../assets/2.png';
 import img3 from '../assets/3.png';
@@ -152,6 +167,11 @@ const productNounForm = computed(() => {
   }
   return getNounForm(count)
 })
+
+const isChecked = ref(false)
+function toggleCheckbox() {
+  isChecked.value = !isChecked.value
+}
 </script>
 
 <style lang="scss" scoped>
@@ -487,6 +507,59 @@ a {
         font-weight: 600;
         line-height: 145%;
         margin-top: 12px;
+      }
+    }
+  }
+
+  .plant-block {
+    display: flex;
+    align-items: center;
+    width: 800px;
+    height: 102px;
+    border-radius: 5px;
+    background: #F6F8FA;
+    margin-top: 47px;
+    padding: 25px;
+    gap: 20px;
+
+    .custom-checkbox {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+
+      .checkbox-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border-radius: 3px;
+        border: 1px solid #797B86;
+        transition: background-color 0.3s ease;
+      }
+    }
+
+    .plant-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      border-radius: 4px;
+      background: #FFF;
+    }
+
+    .label-block {
+      display: flex;
+      flex-direction: column;
+
+      p {
+        color: #797B86;
+        font-family: 'Lato';
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 150%;
       }
     }
   }
