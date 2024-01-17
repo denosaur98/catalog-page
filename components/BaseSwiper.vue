@@ -4,6 +4,7 @@
     <button>aaa</button>
   </div>
   <swiper
+    :loop="true"
     :slides-per-view="3"
     :space-between="50"
     @swiper="onSwiper"
@@ -11,7 +12,7 @@
   >
     <swiper-slide v-for="(product, index) in products" :key="index">
       <div class="product-item">
-        <img :src="product.img" class="product-img">
+        <img :src="product.imgBig" class="product-img">
         <h1 class="product-title">{{ product.title }}</h1>
         <p class="product-description">{{ product.descriptionItem }}</p>
         <div class="price-block">
@@ -25,7 +26,7 @@
 </template>
 
 <script setup>
-import { defineProps, onMounted } from 'vue'
+import { defineProps } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 
