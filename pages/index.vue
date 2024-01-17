@@ -457,6 +457,11 @@ a {
         font-weight: 600;
         line-height: 145%;
         margin-top: 30px;
+
+        &:hover {
+          opacity: 0.5;
+          transition: all (0.3s);
+        }
       }
 
       .click-btn {
@@ -477,6 +482,11 @@ a {
         font-weight: 600;
         line-height: 145%;
         margin-top: 12px;
+
+        &:hover {
+          opacity: 0.5;
+          transition: all (0.3s);
+        }
       }
     }
   }

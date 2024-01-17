@@ -151,6 +151,11 @@ a {
           font-style: normal;
           font-weight: 500;
           line-height: 130%;
+
+          &:hover {
+            opacity: 0.5;
+            transition: all (0.3s);
+          }
         }
 
         .dropdown-btn {
@@ -187,6 +192,11 @@ a {
       .icon {
         width: 40px;
         height: 40px;
+
+        &:hover {
+          opacity: 0.5;
+          transition: all (0.3s);
+        }
       }
 
       .description {

@@ -1,7 +1,18 @@
 <template>
   <div class="title-block">
     <h1 class="title">Просмотренные товары</h1>
-    <button>aaa</button>
+    <div class="slider-btns-block">
+      <button class="slider-btn" @click="prevSlide">
+        <img src="/assets/icon-arrow-left.svg">
+      </button>
+      <div class="count-slides-block">
+        <p class="active">{{ activeSlide }}</p>
+        <p class="count">/ {{ totalSlides }}</p>
+      </div>
+      <button class="slider-btn" @click="nextSlide">
+        <img src="/assets/icon-arrow-right.svg">
+      </button>
+    </div>
   </div>
   <swiper
     :loop="true"
@@ -26,12 +37,33 @@
 </template>
 
 <script setup>
-import store from '../store/index'
+import { ref, computed } from 'vue';
+import store from '../store/index';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 
 const products = computed(() => store.getters.viewedProducts)
+const swiperRef = ref(null)
+const activeSlide = ref(1)
+const totalSlides = ref(4)
+
+function onSwiper(swiper) {
+  swiperRef.value = swiper
+}
+function prevSlide() {
+  swiperRef.value.slidePrev()
+  updateActiveSlide()
+}
+function nextSlide() {
+  swiperRef.value.slideNext()
+  updateActiveSlide()
+}
+function updateActiveSlide() {
+  const activeIndex = swiperRef.value.realIndex + 1
+  activeSlide.value = activeIndex > totalSlides.value ? totalSlides.value : activeIndex
+}
 </script>
+
 
 <style lang="scss" scoped>
 .title-block {
@@ -39,6 +71,48 @@ const products = computed(() => store.getters.viewedProducts)
   justify-content: space-between;
   align-items: center;
   margin-bottom: 47px;
+
+  .slider-btns-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 179px;
+
+    .slider-btn {
+      cursor: pointer;
+      width: 50px;
+      height: 50px;
+      border: none;
+      background: none;
+    }
+
+    .count-slides-block {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      width: 44px;
+      height: 36px;
+
+      .active {
+        color: #212121;
+        font-family: 'Lato';
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 150%;
+      }
+
+      .count {
+        margin-bottom: 2px;
+        color: #797B86;
+        font-family: 'Lato';
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 150%;
+      }
+    }
+  }
 }
 .product-item {
   display: flex;
@@ -110,13 +184,18 @@ const products = computed(() => store.getters.viewedProducts)
       background: #0069B4;
       color: #FFF;
       text-align: center;
-      font-family: Lato;
+      font-family: 'Lato';
       font-size: 16px;
       font-style: normal;
       font-weight: 600;
       line-height: 145%;
       border: none;
       margin-top: 20px;
+
+      &:hover {
+        opacity: 0.5;
+        transition: all (0.3s);
+      }
     }
   }
 }
