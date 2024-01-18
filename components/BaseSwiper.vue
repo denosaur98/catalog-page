@@ -16,7 +16,7 @@
   </div>
   <swiper
     :loop="true"
-    :slides-per-view="3"
+    :slides-per-view="slidesPerView"
     :space-between="50"
     @swiper="onSwiper"
     @slideChange="onSlideChange"
@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted  } from 'vue';
 import store from '../store/index';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
@@ -45,7 +45,8 @@ import 'swiper/css';
 const products = computed(() => store.getters.viewedProducts)
 const swiperRef = ref(null)
 const activeSlide = ref(1)
-const totalSlides = ref(4)
+const totalSlides = ref(5)
+const slidesPerView = ref(3)
 
 function onSwiper(swiper) {
   swiperRef.value = swiper
@@ -62,8 +63,19 @@ function updateActiveSlide() {
   const activeIndex = swiperRef.value.realIndex + 1
   activeSlide.value = activeIndex > totalSlides.value ? totalSlides.value : activeIndex
 }
-</script>
+function updateSlidesPerView() {
+  if (window.innerWidth >= 1500) {
+    slidesPerView.value = 4
+  } else {
+    slidesPerView.value = 3
+  }
+}
 
+onMounted(() => {
+  window.addEventListener('resize', updateSlidesPerView)
+  updateSlidesPerView()
+})
+</script>
 
 <style lang="scss" scoped>
 .title-block {
@@ -77,7 +89,7 @@ function updateActiveSlide() {
     justify-content: space-between;
     align-items: center;
     width: 179px;
-
+    
     .slider-btn {
       cursor: pointer;
       width: 50px;

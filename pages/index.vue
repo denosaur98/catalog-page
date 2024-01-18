@@ -174,6 +174,10 @@ a {
   flex-direction: column;
   padding: 31px 80px 116px;
 
+  @media screen and (min-width: 1450px) {
+    padding: 35px calc((100% - 1340px) / 2) 250px;
+  }
+
   .breadcrumbs {
     display: flex;
     gap: 10px;
@@ -237,6 +241,10 @@ a {
     display: flex;
     justify-content: space-between;
     margin-top: 39px;
+
+    @media screen and (min-width: 1500px) {
+      width: 1300px;
+    }
 
     .products-container {
       display: flex;

@@ -90,6 +90,15 @@ const store = createStore({
           minEuro: 38.80,
           maxEuro: 423.90,
           descriptionItem: 'Вытяжное устройство с датчиком присутствия'
+        },
+        {
+          imgBig: notfound,
+          title: 'Вытяжное устройство GHW',
+          minPrice: 7500,
+          maxPrice: 32400,
+          minEuro: 30.20,
+          maxEuro: 353.50,
+          descriptionItem: 'Вытяжное устройство с датчиком присутствия'
         }
       ]
     }
