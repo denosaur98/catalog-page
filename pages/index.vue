@@ -65,8 +65,10 @@
           <p class="result-name">Стоимость товаров</p>
           <p class="result-summ">{{ totalOrderSum }} ₽</p>
         </div>
-        <button class="order-btn">Оформить заказ</button>
+        <button class="order-btn" @click="placeOrder">Оформить заказ</button>
         <button class="click-btn">Купить в 1 клик</button>
+        <p class="order-status-ok" v-if="orderStatus === 'ok'">Заказ успешно оформлен</p>
+        <p class="order-status-err" v-if="orderStatus === 'err'">Ошибка при оформлении заказа</p>
       </div>
     </div>
     <div class="plant-block">
@@ -91,6 +93,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import axios from 'axios'
 import store from '../store/index'
 import Header from "../components/Header.vue"
 import Swiper from "../components/BaseSwiper.vue"
@@ -112,6 +115,24 @@ function plus(index) {
   if (products.value[index].count < 9) {
     products.value[index].count++
   }
+}
+const orderStatus = ref(null)
+function placeOrder() {
+  const orderData = {
+    products: products.value,
+    totalOrderSum: totalOrderSum.value,
+    totalProductCount: totalProductCount.value,
+    isChecked: isChecked.value
+  }
+  orderStatus.value = null
+  axios.post('https://eojnq8g29o9xdn0.m.pipedream.net', orderData)
+    .then(response => {
+      orderStatus.value = 'ok'
+      clearCart()
+    })
+    .catch(error => {
+      orderStatus.value = 'err'
+    })
 }
 
 const totalProductCount = computed(() => {
@@ -487,6 +508,24 @@ a {
           opacity: 0.5;
           transition: all (0.3s);
         }
+      }
+
+      .order-status-ok {
+        margin-top: 5px;
+        font-size: 13px;
+        text-align: center;
+        font-weight: 600;
+        color: rgb(0, 128, 11);
+        text-transform: uppercase;
+      }
+
+      .order-status-err {
+        margin-top: 5px;
+        font-size: 13px;
+        text-align: center;
+        font-weight: 600;
+        color: rgb(196, 0, 0);
+        text-transform: uppercase;
       }
     }
   }
