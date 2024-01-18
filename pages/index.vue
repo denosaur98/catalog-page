@@ -100,8 +100,8 @@ const products = computed(() => store.getters.allProducts)
 function clearCart() {
   store.dispatch('clearCart')
 }
-function removeProduct() {
-  store.dispatch('removeProduct')
+function removeProduct(index) {
+  store.dispatch('removeProduct', index)
 }
 function minus(index) {
   if (products.value[index].count > 0) {

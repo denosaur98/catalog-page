@@ -110,8 +110,8 @@ const store = createStore({
     clearCart({ commit }) {
       commit('clearCart')
     },
-    removeProduct({ commit }) {
-      commit('removeProduct')
+    removeProduct({ commit }, index) {
+      commit('removeProduct', index)
     }
   }
 })
